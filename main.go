@@ -38,6 +38,16 @@ func GetGuildData(guildId string) GuildData {
 	return guildData
 }
 
+func FormattedName(name string) string {
+	name = strings.ReplaceAll(name, " ", "_")
+	name = strings.ReplaceAll(name, ":", "")
+	name = strings.ReplaceAll(name, "'", "")
+	name = strings.ReplaceAll(name, "!", "")
+	name = strings.ReplaceAll(name, "-", "")
+	name = strings.ReplaceAll(name, "&", "")
+	return strings.ToLower(name)
+}
+
 func main() {
 	err := godotenv.Load()
 	if err != nil {
@@ -50,7 +60,7 @@ func main() {
 	guildIds := strings.Split(os.Getenv("DISCORD_GUILD_IDS"), ",")
 	for _, guildId := range guildIds {
 		guildData := GetGuildData(guildId)
-		db.Table("guild_" + guildData.Name).Create(&models.DiscordStat{
+		db.Table("guild_" + FormattedName(guildData.Name)).Create(&models.DiscordStat{
 			MemberCount:   guildData.MemberCount,
 			PresenceCount: guildData.PresenceCount,
 		})
