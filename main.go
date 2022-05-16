@@ -10,12 +10,13 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 )
 
 type GuildData struct {
 	Name          string `json:"name"`
-	MemberCount   int    `json:"member_count"`
-	PresenceCount int    `json:"presence_count"`
+	MemberCount   int    `json:"approximate_member_count"`
+	PresenceCount int    `json:"approximate_presence_count"`
 }
 
 // Fetch member_count and presence_count from Discord's API for guildId
@@ -61,6 +62,7 @@ func main() {
 	for _, guildId := range guildIds {
 		guildData := GetGuildData(guildId)
 		db.Table("guild_" + FormattedName(guildData.Name)).Create(&models.DiscordStat{
+			Time:          time.Now().Unix(),
 			MemberCount:   guildData.MemberCount,
 			PresenceCount: guildData.PresenceCount,
 		})
