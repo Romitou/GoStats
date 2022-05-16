@@ -14,8 +14,8 @@ import (
 
 type GuildData struct {
 	Name          string `json:"name"`
-	MemberCount   int    `json:"memberCount"`
-	PresenceCount int    `json:"presenceCount"`
+	MemberCount   int    `json:"member_count"`
+	PresenceCount int    `json:"presence_count"`
 }
 
 // Fetch member_count and presence_count from Discord's API for guildId
